@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="GestaoFormacaoDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AreaCurso">
+          <Key>
+            <PropertyRef Name="AreaCursoID" />
+          </Key>
+          <Property Name="AreaCursoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Area" Type="nchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="Curso">
+          <Key>
+            <PropertyRef Name="CursoID" />
+          </Key>
+          <Property Name="CursoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SubareaCursoID" Type="int" Nullable="false" />
+          <Property Name="Nome" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Duracao" Type="decimal" Precision="6" Scale="2" Nullable="false" />
+          <Property Name="DataInicio" Type="date" Nullable="false" />
+          <Property Name="DataFim" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SubareaCurso">
+          <Key>
+            <PropertyRef Name="SubareCursoID" />
+          </Key>
+          <Property Name="SubareCursoID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AreaCursoID" Type="int" Nullable="false" />
+          <Property Name="Subarea" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Curso_SubareaCurso">
+          <End Role="SubareaCurso" Type="Self.SubareaCurso" Multiplicity="1" />
+          <End Role="Curso" Type="Self.Curso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubareaCurso">
+              <PropertyRef Name="SubareCursoID" />
+            </Principal>
+            <Dependent Role="Curso">
+              <PropertyRef Name="SubareaCursoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SubareaCurso_AreaCurso">
+          <End Role="AreaCurso" Type="Self.AreaCurso" Multiplicity="1" />
+          <End Role="SubareaCurso" Type="Self.SubareaCurso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AreaCurso">
+              <PropertyRef Name="AreaCursoID" />
+            </Principal>
+            <Dependent Role="SubareaCurso">
+              <PropertyRef Name="AreaCursoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GestaoFormacaoDBModelStoreContainer">
+          <EntitySet Name="AreaCurso" EntityType="Self.AreaCurso" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Curso" EntityType="Self.Curso" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubareaCurso" EntityType="Self.SubareaCurso" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Curso_SubareaCurso" Association="Self.FK_Curso_SubareaCurso">
+            <End Role="SubareaCurso" EntitySet="SubareaCurso" />
+            <End Role="Curso" EntitySet="Curso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SubareaCurso_AreaCurso" Association="Self.FK_SubareaCurso_AreaCurso">
+            <End Role="AreaCurso" EntitySet="AreaCurso" />
+            <End Role="SubareaCurso" EntitySet="SubareaCurso" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GestaoFormacaoDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AreaCurso">
+          <Key>
+            <PropertyRef Name="AreaCursoID" />
+          </Key>
+          <Property Name="AreaCursoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Area" Type="String" MaxLength="100" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="SubareaCurso" Relationship="Self.FK_SubareaCurso_AreaCurso" FromRole="AreaCurso" ToRole="SubareaCurso" />
+        </EntityType>
+        <EntityType Name="Curso">
+          <Key>
+            <PropertyRef Name="CursoID" />
+          </Key>
+          <Property Name="CursoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SubareaCursoID" Type="Int32" Nullable="false" />
+          <Property Name="Nome" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Duracao" Type="Decimal" Precision="6" Scale="2" Nullable="false" />
+          <Property Name="DataInicio" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DataFim" Type="DateTime" Nullable="false" Precision="0" />
+          <NavigationProperty Name="SubareaCurso" Relationship="Self.FK_Curso_SubareaCurso" FromRole="Curso" ToRole="SubareaCurso" />
+        </EntityType>
+        <EntityType Name="SubareaCurso">
+          <Key>
+            <PropertyRef Name="SubareCursoID" />
+          </Key>
+          <Property Name="SubareCursoID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AreaCursoID" Type="Int32" Nullable="false" />
+          <Property Name="Subarea" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AreaCurso" Relationship="Self.FK_SubareaCurso_AreaCurso" FromRole="SubareaCurso" ToRole="AreaCurso" />
+          <NavigationProperty Name="Curso" Relationship="Self.FK_Curso_SubareaCurso" FromRole="SubareaCurso" ToRole="Curso" />
+        </EntityType>
+        <Association Name="FK_SubareaCurso_AreaCurso">
+          <End Role="AreaCurso" Type="Self.AreaCurso" Multiplicity="1" />
+          <End Role="SubareaCurso" Type="Self.SubareaCurso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AreaCurso">
+              <PropertyRef Name="AreaCursoID" />
+            </Principal>
+            <Dependent Role="SubareaCurso">
+              <PropertyRef Name="AreaCursoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Curso_SubareaCurso">
+          <End Role="SubareaCurso" Type="Self.SubareaCurso" Multiplicity="1" />
+          <End Role="Curso" Type="Self.Curso" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubareaCurso">
+              <PropertyRef Name="SubareCursoID" />
+            </Principal>
+            <Dependent Role="Curso">
+              <PropertyRef Name="SubareaCursoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GestaoFormacaoDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AreaCurso" EntityType="Self.AreaCurso" />
+          <EntitySet Name="Curso" EntityType="Self.Curso" />
+          <EntitySet Name="SubareaCurso" EntityType="Self.SubareaCurso" />
+          <AssociationSet Name="FK_SubareaCurso_AreaCurso" Association="Self.FK_SubareaCurso_AreaCurso">
+            <End Role="AreaCurso" EntitySet="AreaCurso" />
+            <End Role="SubareaCurso" EntitySet="SubareaCurso" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Curso_SubareaCurso" Association="Self.FK_Curso_SubareaCurso">
+            <End Role="SubareaCurso" EntitySet="SubareaCurso" />
+            <End Role="Curso" EntitySet="Curso" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GestaoFormacaoDBModelStoreContainer" CdmEntityContainer="GestaoFormacaoDBEntities">
+          <EntitySetMapping Name="AreaCurso">
+            <EntityTypeMapping TypeName="GestaoFormacaoDBModel.AreaCurso">
+              <MappingFragment StoreEntitySet="AreaCurso">
+                <ScalarProperty Name="AreaCursoID" ColumnName="AreaCursoID" />
+                <ScalarProperty Name="Area" ColumnName="Area" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Curso">
+            <EntityTypeMapping TypeName="GestaoFormacaoDBModel.Curso">
+              <MappingFragment StoreEntitySet="Curso">
+                <ScalarProperty Name="CursoID" ColumnName="CursoID" />
+                <ScalarProperty Name="SubareaCursoID" ColumnName="SubareaCursoID" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Duracao" ColumnName="Duracao" />
+                <ScalarProperty Name="DataInicio" ColumnName="DataInicio" />
+                <ScalarProperty Name="DataFim" ColumnName="DataFim" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubareaCurso">
+            <EntityTypeMapping TypeName="GestaoFormacaoDBModel.SubareaCurso">
+              <MappingFragment StoreEntitySet="SubareaCurso">
+                <ScalarProperty Name="SubareCursoID" ColumnName="SubareCursoID" />
+                <ScalarProperty Name="AreaCursoID" ColumnName="AreaCursoID" />
+                <ScalarProperty Name="Subarea" ColumnName="Subarea" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
